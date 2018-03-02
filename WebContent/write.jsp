@@ -12,8 +12,8 @@
 <body>
 <% //현재 세션이 존재할경우 아이디값을 받아서 넣어준다.
 	String userID = null;
-	if(session.getAttribute("UserID")!=null){
-		userID =(String)session.getAttribute("UserID");
+	if(session.getAttribute("userID")!=null){
+		userID =(String)session.getAttribute("userID");
 	}
 	System.out.println("main userid:"+userID);
 %>
@@ -32,8 +32,9 @@
 			id="bs-exampls-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li  class="active"><a href="BBS.jsp">게시판</a></li>
+				<li  class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
+			
 			<%
 			if(userID==null){
 			

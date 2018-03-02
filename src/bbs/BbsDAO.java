@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class BbsDAO {
 	private Connection conn;
 	private ResultSet rs;
-	public  BbsDAO() { //µ¥ÀÌÅÍ Á¢±Ù°´Ã¼ (µ¥ÀÌÅÍ¸¦ ³Ö°í,µ¥ÀÌÅÍ¸¦ °¡Á®¿À´Â°÷)
+	public  BbsDAO() { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù°ï¿½Ã¼ (ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ö°ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½)
 		try {
 			String dbURL= "jdbc:mysql://localhost:3306/BBS";
 			String dbID= "root";
@@ -21,8 +24,8 @@ public class BbsDAO {
 		}
 	}
 	
-	public String getDate() {
-		String SQL= "SELECT NEW()";
+	public String getDate() { //ï¿½ï¿½Â¥
+		String SQL= "SELECT NOW()";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			rs=pstmt.executeQuery();
@@ -32,7 +35,7 @@ public class BbsDAO {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return ""; //µ¥ÀÌÅÍº£ÀÌ½º¿À·ù
+		return ""; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	public int getNext() {
 		String SQL= "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
@@ -42,28 +45,67 @@ public class BbsDAO {
 			if(rs.next()) {
 				return rs.getInt(1)+1;
 			}
-			return 1; // Ã¹¹øÂ° °Ô½Ã¹°ÀÎ°æ¿ì
+			return 1; // Ã¹ï¿½ï¿½Â° ï¿½Ô½Ã¹ï¿½ï¿½Î°ï¿½ï¿½
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -1; //µ¥ÀÌÅÍº£ÀÌ½º¿À·ù
+		return -1; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	public int write(String bbsTitle,String userID , String bbsContent) {
 		String SQL= "INSERT INTO BBS VALUES(?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext());
-			pstmt.setString(2, bbsTitle);
-			pstmt.setString(3, userID);
-			pstmt.setString(4, getDate());
-			pstmt.setString(5, bbsContent);
+			pstmt.setInt(1, getNext()); //ï¿½ï¿½È£
+			pstmt.setString(2, bbsTitle); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			pstmt.setString(3, userID); //ï¿½Û¼ï¿½ï¿½ï¿½ iD
+			pstmt.setString(4, getDate()); //ï¿½ï¿½Â¥
+			pstmt.setString(5, bbsContent);//ï¿½ï¿½ï¿½ï¿½
+			
 			pstmt.setInt(6, 1);
-		
+			System.out.println("update");
 			return pstmt.executeUpdate();
 			}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -1; //µ¥ÀÌÅÍº£ÀÌ½º¿À·ù
+		return -1; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½
+	}
+	public ArrayList<Bbs> getList(int pageNumber){
+		String SQL= "SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable =1 ORDER BY bbsID DESC LIMIT 10";
+		ArrayList<Bbs> list = new ArrayList<Bbs>();
+		SimpleDateFormat b = new SimpleDateFormat("yyyyë…„MMì›”ddì¼ HHì‹œmmë¶„ssì´ˆ");
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext()-(pageNumber -1 )*10);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				Bbs bbs=new Bbs();
+				bbs.setBbsID(rs.getInt(1));
+				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserID(rs.getString(3));
+				Timestamp a = rs.getTimestamp(4); //4 <- dateìë¦¬
+			
+				bbs.setBbsDate(b.format(a));
+				bbs.setBbsContent(rs.getString(1));
+				bbs.setBbsAvailable(rs.getInt(1));
+				list.add(bbs);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public boolean nextPage(int pageNumber) {
+		String SQL = "SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable =1";
+		try {	
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext() - (pageNumber -1 )*10);;
+			if(rs.next()) {
+				return true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
 

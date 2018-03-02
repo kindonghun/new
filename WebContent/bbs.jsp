@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="bbs.BbsDAO" %>
+<%@ page import="bbs.Bbs" %>
+<%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,10 +16,15 @@
 <body>
 <% //현재 세션이 존재할경우 아이디값을 받아서 넣어준다.
 	String userID = null;
-	if(session.getAttribute("UserID")!=null){
-		userID =(String)session.getAttribute("UserID");
+	if(session.getAttribute("userID")!=null){
+		userID =(String)session.getAttribute("userID");
 	}
 	System.out.println("main userid:"+userID);
+	
+	int pageNumber =1;
+	if(request.getParameter("pageNumber")!=null){
+		pageNumber=Integer.parseInt(request.getParameter("pageNumber"));
+	}
 %>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -32,7 +41,7 @@
 			id="bs-exampls-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li  class="active"><a href="BBS.jsp">게시판</a></li>
+				<li  class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
 			<%
 			if(userID==null){
@@ -78,12 +87,20 @@
 				</tr>
 			</thead>
 			<tbody>
+				<%
+					BbsDAO bbsDAO = new BbsDAO();
+					ArrayList<Bbs> list =bbsDAO.getList(pageNumber);
+					for(int i=0; i< list.size();i++){
+				%>
 				<tr>
-				<td style ="background-color:#ffffff; text-align:center;">1</td>
-				<td style ="background-color:#ffffff; text-align:center;">안녕하세요</td>
-				<td style ="background-color:#ffffff; text-align:center;">홍길동</td>
-				<td style ="background-color:#ffffff; text-align:center;">2017-05-04</td>
+				<td><%=list.get(i).getBbsID() %></td>
+				<td><a href="view.jsp?bbsID<%=list.get(i).getBbsID()%>"><%=list.get(i).getBbsTitle() %></a></td>
+				<td><%= list.get(i).getUserID()%></td>
+				<td><%= list.get(i).getBbsDate()%></td>
 				</tr>
+				<%
+					}
+				%>
 			</tbody>
 			</table>
 			<a href="write.jsp" class="btn btn-primary pull-rigth">글쓰기</a> <!-- 새로운 write.jsp 페이지로 만들고

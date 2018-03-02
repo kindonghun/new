@@ -10,7 +10,7 @@ public class UserDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	public UserDAO() { //µ¥ÀÌÅÍ Á¢±Ù°´Ã¼ (µ¥ÀÌÅÍ¸¦ ³Ö°í,µ¥ÀÌÅÍ¸¦ °¡Á®¿À´Â°÷)
+	public UserDAO() { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù°ï¿½Ã¼ (ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ö°ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½)
 		try {
 			String dbURL= "jdbc:mysql://localhost:3306/BBS";
 			String dbID= "root";
@@ -32,21 +32,21 @@ public class UserDAO {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				if(rs.getString(1).equals(userPassword)) {
-					return 1; //·Î±×ÀÎ¼º°ø
+					return 1; //ï¿½Î±ï¿½ï¿½Î¼ï¿½ï¿½ï¿½
 				}
 				else 
-					return 0; //ºñ¹Ð¹øÈ£ ºÒÀÏÄ¡
+					return 0; //ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½Ä¡
 			}
-			return -1; //¾ÆÀÌµð°¡¾øÀ½
+			return -1; //ï¿½ï¿½ï¿½Ìµð°¡¾ï¿½ï¿½ï¿½
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -2; //µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù
+		return -2; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 	
-	public int join(User user) { //È¸¿ø°¡ÀÔ±â´É
-		String SQL= "INSERT INTO USER VALUE(?,?,?,?,?)"; //user ¹®ÀÇ ¼øÂ÷ÀûÀ¸·Î ´ëÀÔÇÒ¼öÀÖµµ·Ï 
-		try {											  //SQL¿¡ ´ëÀÔ
+	public int join(User user) { //È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½
+		String SQL= "INSERT INTO USER VALUE(?,?,?,?,?)"; //user ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½Öµï¿½ï¿½ï¿½ 
+		try {											  //SQLï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, user.getUserID());
 			pstmt.setString(2, user.getUserPassword());
@@ -54,10 +54,11 @@ public class UserDAO {
 			pstmt.setString(4, user.getUserGender());
 			pstmt.setString(5, user.getUserEmail());
 			return pstmt.executeUpdate();
-			//-1 ÀÌ ¾Æ´Ñ°æ¿ì È¸¿ø°¡ÀÔÀ» Á¤»óÀûÀ¸·Î °¡ÀÔ°¡´É
+			//-1 ï¿½ï¿½ ï¿½Æ´Ñ°ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô°ï¿½ï¿½ï¿½
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -1; //µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù
+		return -1; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
+
 }
