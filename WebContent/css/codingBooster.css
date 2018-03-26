@@ -1,0 +1,129 @@
+/*전체영역을 통틀어서 스타일정의*/
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+*{
+		font-family: 'Indie Flower', cursive;
+
+}
+a {
+	color: #000000;
+	text-decoration: none;
+}
+a:hover{
+	color: #bbbbbb;
+	text-decoration: none;
+	cursor: pointer;
+}
+li {
+	font-family: 'Mina', sans-serif; 
+}
+table{
+	font-family: 'Mina', sans-serif; 
+}
+/* 내비게이션 영역 */
+.navbar-default{ /*배경색상*/
+	background-color: #000000;
+	border-color: #000000;
+}
+.navbar-default .navbar-brand{ /*네비게이션 제목색상*/
+	color: #ffffff;
+}
+.navbar-default .navbar-brand: hover,
+.navbar-default .navbar-brand: focus { /*네비게이션에 제목에 마우스를 올렸을떄 */
+	background-color: transparent;
+	color: #bbbbbb;
+}
+.navbar-default .navbar-nav > .active a,
+.navbar-default .navbar-nav > .active a:hover,
+.navbar-default .navbar-nav > .active a:focus{ /*현재 선택된 네비게이션 색상이벤트*/
+	color: white;
+	background-color: #000000;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus { /*네비게이션의 글자에 마우스를 올렸을때 */
+	color: #bbbbbb;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus{ /*드랍다운이 열렸을때 마우스 색상이벤트*/
+	color: #000000;
+	background-color: #ffffff;
+	text-decoration: none;
+}
+.navbar-default .navbar-nav > li > a { /* 네비게이션 기본색상 */
+	color: white;
+
+}
+@media (max-width: 767px){ /*해상도가 작을때 드랍다운 아이템에 마우스를 올렸을떄 */
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a{
+		color: #ffffff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color:#bbbbbb;
+}
+
+html.open {
+  overflow: hidden;
+}
+
+.btn {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 1;
+  background-image: url("http://s1.daumcdn.net/cfs.tistory/custom/blog/204/2048858/skin/images/menu.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.close {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-image: url("http://s1.daumcdn.net/cfs.tistory/custom/blog/204/2048858/skin/images/close.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+#menu {
+  width: 150px;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  right: -152px;
+  z-index: 10;
+  border: 1px solid #c9c9c9;
+  background-color: white;
+  text-align: center;
+  transition: All 0.2s ease;
+  -webkit-transition: All 0.2s ease;
+  -moz-transition: All 0.2s ease;
+  -o-transition: All 0.2s ease;
+}
+
+#menu.open {
+  right: 0px;
+}
+
+.page_cover.open {
+  display: block;
+}
+
+.page_cover {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 4;
+  display: none;
+}
